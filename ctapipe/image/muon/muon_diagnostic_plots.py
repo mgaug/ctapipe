@@ -142,9 +142,11 @@ def plot_muon_event(event, muonparams):
                 frame=NominalFrame(origin=altaz)
             )
 
-            flen = subarray.tel[tel_id].optics.equivalent_focal_length
+            flen = subarray.tel[tel_id].optics.equivalent_focal_length 
+
+            telescope_pointing = SkyCoord(alt=event.mc.alt, az=event.mc.az, frame=alt_az)
             ring_camcoord = ring_nominal.transform_to(CameraFrame(
-                pointing_direction=altaz,
+                telescope_pointing=telescope_pointing,
                 focal_length=flen,
                 rotation=rotr_angle))
 
@@ -159,6 +161,7 @@ def plot_muon_event(event, muonparams):
                 x=px,
                 y=py,
                 frame=CameraFrame(
+                    telescope_pointing=telescope_pointing,
                     focal_length=flen,
                     rotation=geom.pix_rotation,
                 )
